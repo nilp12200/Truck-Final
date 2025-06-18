@@ -41,8 +41,6 @@
 // }
 
 // export default App;
-
-
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Home from './Home';
@@ -64,8 +62,10 @@ function Layout() {
     <>
       {!hideNavbar && <Navbar />}
       <Routes>
+        {/* 🔐 Public */}
         <Route path="/" element={<Login />} />
-        {/* ✅ Wrap protected routes */}
+
+        {/* 🔒 Protected Routes */}
         <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
         <Route path="/staff" element={<PrivateRoute><StaffPage /></PrivateRoute>} />
         <Route path="/gate" element={<PrivateRoute><GateKeeper /></PrivateRoute>} />
@@ -86,4 +86,3 @@ function App() {
 }
 
 export default App;
-
