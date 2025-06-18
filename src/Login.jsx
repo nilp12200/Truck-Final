@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -13,18 +15,22 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Form submitted", API_URL, username, password);
 
     try {
-      const res = await axios.post('http://localhost:3001/api/login', {
-        username: username.trim(),   // ✅ Trim to avoid space errors
+      const res = await axios.post(`${API_URL}/api/login`, {
+        username: username.trim(),
         password: password.trim()
       });
 
       if (res.data.success) {
+        // ✅ Store login flag for route protection
+        localStorage.setItem('isLoggedIn', 'true');
+
         alert('Login successful');
         navigate('/home');
       } else {
-        alert(res.data.message); // Better message
+        alert(res.data.message);
       }
     } catch (err) {
       console.error(err.response?.data || err.message);
@@ -91,7 +97,12 @@ export default function Login() {
           </div>
         </form>
 
-       
+        <p className="mt-6 text-center text-sm text-gray-600">
+          Not a member?{' '}
+          <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+            Start your free trial
+          </a>
+        </p>
       </div>
     </div>
   );
